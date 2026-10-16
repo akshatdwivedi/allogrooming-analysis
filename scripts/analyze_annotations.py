@@ -97,6 +97,7 @@ def parse_file(mat_path, fps):
 
 
 DAY_RE = re.compile(r"day\s*(\d+)", re.IGNORECASE)
+CAGE_RE = re.compile(r"cage\s*0*(\d+)", re.IGNORECASE)
 
 
 def find_day_condition(mat_path, data_root):
@@ -115,6 +116,12 @@ def find_day_condition(mat_path, data_root):
     return day, condition
 
 
+def find_cage(mat_path):
+    """Extract the cage number from the filename, e.g. 'day2cage11_annot.mat' -> 11."""
+    m = CAGE_RE.search(mat_path.name)
+    return int(m.group(1)) if m else None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("data_root", type=Path)
@@ -131,10 +138,12 @@ def main():
     all_bout_rows = []
     for mat_path in mat_files:
         day, condition = find_day_condition(mat_path, args.data_root)
+        cage = find_cage(mat_path)
         rows, bouts_by_behavior = parse_file(mat_path, args.fps)
         for row in rows:
             row["day"] = day
             row["condition"] = condition
+            row["cage"] = cage
             all_rows.append(row)
         for behavior, bouts in bouts_by_behavior.items():
             for start_s, end_s, dur_s in bouts:
@@ -159,7 +168,7 @@ def main():
 
     # Wide comparison table: one row per file, one column per behavior's
     # cumulative frame count, so files can be compared side by side.
-    id_cols = ["file", "day", "condition", "total_frames", "video_seconds"]
+    id_cols = ["file", "day", "condition", "cage", "total_frames", "video_seconds"]
     meta = metrics_df[id_cols].drop_duplicates(subset="file").set_index("file")
     frames_wide = metrics_df.pivot_table(
         index="file", columns="behavior", values="frames", fill_value=0
