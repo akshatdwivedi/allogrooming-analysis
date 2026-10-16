@@ -22,16 +22,21 @@ from statsmodels.genmod.families import NegativeBinomial
 from statsmodels.genmod.generalized_estimating_equations import GEE
 
 
-def fit_gaussian_lmm(df, outcome, interaction):
-    formula = f'{outcome} ~ C(condition, Treatment("sham")) * day' if interaction \
-        else f'{outcome} ~ C(condition, Treatment("sham")) + day'
+def build_formula(outcome, interaction, covariates):
+    base = f'C(condition, Treatment("sham")) * day' if interaction \
+        else f'C(condition, Treatment("sham")) + day'
+    extra = "".join(f" + {c}" for c in covariates)
+    return f"{outcome} ~ {base}{extra}"
+
+
+def fit_gaussian_lmm(df, outcome, interaction, covariates):
+    formula = build_formula(outcome, interaction, covariates)
     model = smf.mixedlm(formula, df, groups=df["cage"])
     return model.fit(reml=True)
 
 
-def fit_negative_binomial_gee(df, outcome, interaction):
-    formula = f'{outcome} ~ C(condition, Treatment("sham")) * day' if interaction \
-        else f'{outcome} ~ C(condition, Treatment("sham")) + day'
+def fit_negative_binomial_gee(df, outcome, interaction, covariates):
+    formula = build_formula(outcome, interaction, covariates)
 
     # Estimate the dispersion parameter (alpha) via MLE rather than assuming a
     # value -- this is what confirms real over-dispersion vs. a Poisson model.
@@ -66,7 +71,12 @@ def main():
     ap.add_argument("--outcome", required=True, help="Column name to model, e.g. allogrooming")
     ap.add_argument("--interaction", action="store_true",
                      help="Include day x condition interaction (fading/temporal question)")
+    ap.add_argument("--covariates", default="",
+                     help="Semicolon-separated extra terms to add (semicolon, not comma, "
+                          "since a term like C(sex, Treatment(\"f\")) contains a comma itself), "
+                          "e.g. 'C(sex, Treatment(\"f\"))' or 'C(sex, Treatment(\"f\"));weight_change'")
     args = ap.parse_args()
+    covariates = [c.strip() for c in args.covariates.split(";") if c.strip()]
 
     df = pd.read_csv(args.data_csv)
     df[args.outcome] = df[args.outcome].astype(int)
@@ -75,12 +85,12 @@ def main():
     print()
 
     print("=== Gaussian linear mixed model ===")
-    gauss = fit_gaussian_lmm(df, args.outcome, args.interaction)
+    gauss = fit_gaussian_lmm(df, args.outcome, args.interaction, covariates)
     print(gauss.summary())
     print()
 
     print("=== Negative binomial (GEE, cage-clustered) ===")
-    nb_result, alpha_hat = fit_negative_binomial_gee(df, args.outcome, args.interaction)
+    nb_result, alpha_hat = fit_negative_binomial_gee(df, args.outcome, args.interaction, covariates)
     print(f"MLE-estimated dispersion (alpha): {alpha_hat:.3f}")
     print(nb_result.summary())
     print()
