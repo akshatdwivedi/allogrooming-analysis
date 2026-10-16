@@ -152,6 +152,7 @@ def main():
                         "file": mat_path.name,
                         "day": day,
                         "condition": condition,
+                        "cage": cage,
                         "behavior": behavior,
                         "start_sec": start_s,
                         "end_sec": end_s,
