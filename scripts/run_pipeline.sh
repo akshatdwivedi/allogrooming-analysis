@@ -25,8 +25,13 @@ python3 "$SCRIPT_DIR/01_parse_annotations.py" "$PILOT_RAW" \
     --out "$DATA/interim/pilot_metrics.csv" --bouts-out "$DATA/interim/pilot_bouts.csv"
 
 echo "=== 2. Resolve duplicates and apply exclusions ==="
+# Neither cohort's raw data has TBI/sham subfolders, so 01_parse_annotations.py
+# cannot infer `condition` for either one -- both need --condition-map
+# (verified against the expansion cohort's real raw data; an earlier version
+# of this pipeline incorrectly assumed only the pilot cohort needed this).
 python3 "$SCRIPT_DIR/02_resolve_duplicates_and_exclude.py" "$DATA/interim/expansion_metrics_by_file.csv" \
-    --cohort expansion --exclusions "$DATA/exclusions.csv" --out "$DATA/processed/expansion_clean.csv"
+    --cohort expansion --exclusions "$DATA/exclusions.csv" --condition-map "$DATA/expansion_condition_map.json" \
+    --out "$DATA/processed/expansion_clean.csv"
 python3 "$SCRIPT_DIR/02_resolve_duplicates_and_exclude.py" "$DATA/interim/pilot_metrics_by_file.csv" \
     --cohort pilot --exclusions "$DATA/exclusions.csv" --condition-map "$DATA/pilot_condition_map.json" \
     --out "$DATA/processed/pilot_clean.csv"

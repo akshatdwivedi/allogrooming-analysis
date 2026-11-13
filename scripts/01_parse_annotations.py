@@ -1,7 +1,7 @@
 """
-Parse BAnnotator .mat annotation files (Day{N}/{TBI,sham}/*.mat) and compute
-per-file behavior metrics: cumulative frames, time spent, and % of video for
-every behavior category present in the file (allogrooming, investigation,
+Parse BAnnotator .mat annotation files and compute per-file behavior
+metrics: cumulative frames, time spent, and % of video for every behavior
+category present in the file (allogrooming, investigation,
 offensive_fighting, defensive_fighting, other, ...), plus bout lists for
 raster/cumulative plotting.
 
@@ -16,9 +16,18 @@ Outputs three files:
     raster/cumulative plotting.
 
 <data_root> is expected to contain subfolders named "Day1".."Day5" (or any
-name containing "day" + a digit), each with two subfolders whose names
-contain "tbi" and "sham" (case-insensitive), each holding *_annotation.mat
-files.
+name containing "day" + a digit), each holding that day's *_annotation.mat
+files directly.
+
+IMPORTANT: this script can only recover `day` and `cage` from the folder
+structure and filename -- it has no way to infer `condition` (TBI/sham),
+because neither cohort's raw data is organized into TBI/sham subfolders (an
+earlier version of this docstring assumed it was; verified false against
+both cohorts' actual raw data). Every row's `condition` column will be
+empty after this step. Fill it in with
+`02_resolve_duplicates_and_exclude.py --condition-map <cage-to-condition
+JSON>` (see data/expansion_condition_map.json and
+data/pilot_condition_map.json) before excluding or modeling.
 """
 import argparse
 import re

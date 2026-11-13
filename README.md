@@ -18,8 +18,13 @@ hosted on a public data archive (Zenodo/Dryad; link added once the archive
 entry is created, see the paper's data-availability statement). Download
 them and point the pipeline at the resulting directories as described
 below. `data/exclusions.csv`, `data/DATA_DICTIONARY.md`, and
-`data/pilot_condition_map.json` *are* tracked here, since they're small and
-document the pipeline itself rather than being the raw data.
+`data/expansion_condition_map.json` and `data/pilot_condition_map.json` *are*
+tracked here, since they're small and document the pipeline itself rather
+than being the raw data. Both cohorts need their condition map -- neither
+cohort's raw files are organized into TBI/sham subfolders, so
+`01_parse_annotations.py` cannot infer `condition` from the folder
+structure for either one (verified against the expansion cohort's real raw
+data; this repo's docs briefly, incorrectly, assumed otherwise).
 
 ## Reproducing the analysis end-to-end
 

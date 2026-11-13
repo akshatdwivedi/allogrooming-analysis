@@ -30,7 +30,7 @@ Long format (`metrics.csv`, one row per file x behavior) and wide format
 |---|---|
 | `file` | Source `.mat` filename |
 | `day` | Observation day (1-5), parsed from the containing folder name |
-| `condition` | `TBI` or `sham`, parsed from the containing folder name. **Not populated for cohorts without TBI/sham subfolders** (e.g. the pilot cohort) -- see `02_resolve_duplicates_and_exclude.py --condition-map`. |
+| `condition` | `TBI` or `sham`. **Always empty after this step** -- neither cohort's raw data is organized into TBI/sham subfolders (confirmed against both cohorts' actual raw data), so `01_parse_annotations.py` has no folder-based signal to read it from. Filled in by `02_resolve_duplicates_and_exclude.py --condition-map`, using `data/expansion_condition_map.json` or `data/pilot_condition_map.json`. |
 | `cage` | Cage number, parsed from the filename |
 | `behavior` (long format only) | Which behavior this row's counts are for |
 | `frames` | Total frames scored as this behavior in this video |
