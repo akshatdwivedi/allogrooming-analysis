@@ -46,7 +46,12 @@ def fit_negative_binomial_gee(df, outcome, interaction, covariates):
     family = NegativeBinomial(alpha=alpha_hat)
     gee = GEE.from_formula(formula, groups="cage", data=df,
                             cov_struct=Exchangeable(), family=family)
-    result = gee.fit()
+    # bias_reduced (Mancl-DeRouen/Fay-Graubard) small-sample correction: GEE's
+    # default sandwich SE is anti-conservative at low cluster counts (confirmed
+    # by simulation at this study's scale -- see tests/coverage_check.py, which
+    # found ~87-89% actual CI coverage vs. the 95% nominal target under the
+    # default). This does not change the point estimate, only the SE/CI/p.
+    result = gee.fit(cov_type="bias_reduced")
     return result, alpha_hat
 
 
