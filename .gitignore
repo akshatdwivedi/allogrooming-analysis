@@ -1,6 +1,12 @@
-data/
-*.csv
-figures/
+# Raw and intermediate annotation data are hosted on a public archive
+# (Zenodo/Dryad), not committed to this repo -- see data/DATA_DICTIONARY.md
+# and the top-level README for where to get them. Small files that document
+# *how* the pipeline works (not the data itself) stay tracked normally:
+# data/exclusions.csv, data/DATA_DICTIONARY.md, condition maps, etc.
+/data/raw/
+/data/interim/
+/data/processed/
+
 __pycache__/
 *.pyc
 tests/synthetic_data/
