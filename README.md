@@ -10,6 +10,7 @@ BAnnotator video annotations.
 - **What each file/column means:** [`data/DATA_DICTIONARY.md`](data/DATA_DICTIONARY.md)
 - **Why the statistics are built this way:** [`docs/METHODS.md`](docs/METHODS.md)
 - **Which videos were excluded and why:** [`docs/EXCLUSIONS.md`](docs/EXCLUSIONS.md)
+- **The paper's working skeleton:** [`manuscript/outline.md`](manuscript/outline.md)
 
 ## Getting the data
 
