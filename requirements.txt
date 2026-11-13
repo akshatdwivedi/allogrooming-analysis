@@ -1,0 +1,11 @@
+# Pinned to the versions this pipeline was validated against (including the
+# code audit's synthetic ground-truth and cross-language checks). GEE and its
+# bias_reduced correction are implementation details of statsmodels that can
+# change between versions -- pin these rather than installing "latest" if you
+# need to reproduce the exact reported numbers.
+numpy==2.4.6
+scipy==1.17.1
+pandas==3.1.1
+statsmodels==0.15.0
+matplotlib==3.11.2
+scikit-learn==1.9.1
