@@ -9,8 +9,8 @@ outcome columns to model (e.g. allogrooming, investigation), one row per
 video/cage/day.
 
 Usage:
-    python fit_models.py clean_data.csv --outcome allogrooming
-    python fit_models.py clean_data.csv --outcome investigation --interaction
+    python 04_fit_models.py clean_data.csv --outcome allogrooming
+    python 04_fit_models.py clean_data.csv --outcome investigation --interaction
 """
 import argparse
 

@@ -6,7 +6,7 @@ offensive_fighting, defensive_fighting, other, ...), plus bout lists for
 raster/cumulative plotting.
 
 Usage:
-    python analyze_annotations.py <data_root> [--fps 30] [--out metrics.csv]
+    python 01_parse_annotations.py <data_root> [--fps 30] [--out metrics.csv]
 
 Outputs three files:
   - <out> (default metrics.csv): long format, one row per file x behavior.

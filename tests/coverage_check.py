@@ -2,7 +2,7 @@
 Monte Carlo coverage check: regenerate the synthetic dataset under many
 random seeds (same generative model/ground truth as generate_synthetic_data.py,
 same cage/day structure as the real study: 6 TBI cages, 4 sham cages, 5 days),
-refit the real fit_models.py pipeline each time, and check how often the
+refit the real 04_fit_models.py pipeline each time, and check how often the
 planted true value falls inside the reported 95% CI.
 
 This answers: "is the discrepancy we saw in the single run a code bug, or

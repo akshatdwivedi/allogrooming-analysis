@@ -1,6 +1,6 @@
 """
 Generate a small synthetic BAnnotator-format dataset with a KNOWN planted
-effect, so we can run the real pipeline (analyze_annotations.py + fit_models.py)
+effect, so we can run the real pipeline (01_parse_annotations.py + 04_fit_models.py)
 on data whose ground truth we already know, and check the recovered estimates
 against it.
 
@@ -39,7 +39,7 @@ CAGES = {
 }
 DAYS = [1, 2, 3, 4, 5]
 
-# --- Ground truth parameters (what we expect fit_models.py to recover) ---
+# --- Ground truth parameters (what we expect 04_fit_models.py to recover) ---
 BASE_ALLO = 60.0     # sham, day 1, mean allogrooming frames (before cage multiplier)
 TBI_RATIO = 10.0      # true condition IRR for allogrooming
 DAY_DECAY = 0.80      # true per-day IRR for allogrooming (applies to both groups)

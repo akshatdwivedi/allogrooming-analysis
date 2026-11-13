@@ -5,13 +5,13 @@ known, rather than real annotations.
 
 - `generate_synthetic_data.py` -- writes a small set of BAnnotator-format
   `.mat` files (8 cages, 5 days) with a planted allogrooming/investigation
-  effect, using the real `.mat` struct layout so `scripts/analyze_annotations.py`
+  effect, using the real `.mat` struct layout so `scripts/01_parse_annotations.py`
   parses them completely unmodified. Ground truth (the true rates/ratios used
   to generate the data) is saved to `synthetic_data/ground_truth.json`.
 
 - `coverage_check.py` -- Monte Carlo check (200 simulated datasets, same
   cluster count as the real study: 6 TBI cages / 4 sham cages / 5 days) of
-  whether `scripts/fit_models.py`'s 95% CIs actually contain the true planted
+  whether `scripts/04_fit_models.py`'s 95% CIs actually contain the true planted
   value at the advertised rate. Answers: are point estimates unbiased, and are
   the reported confidence intervals trustworthy at this sample size?
 
@@ -19,9 +19,9 @@ Run:
 
 ```
 python tests/generate_synthetic_data.py
-python scripts/analyze_annotations.py tests/synthetic_data/data --out tests/synthetic_data/metrics.csv
+python scripts/01_parse_annotations.py tests/synthetic_data/data --out tests/synthetic_data/metrics.csv
 # merge in tests/synthetic_data/ground_truth.json's condition labels by file, then:
-python scripts/fit_models.py <merged_csv> --outcome allogrooming
+python scripts/04_fit_models.py <merged_csv> --outcome allogrooming
 
 python tests/coverage_check.py
 ```
