@@ -79,6 +79,10 @@ converging on the same conclusion for the behaviors they tested:
   (`glm.nb`, `geepack`) during the code audit and matched the Python
   pipeline's results.
 
+These are implemented in `scripts/05_sensitivity_checks.py` (`truncate` and
+`nonparametric` subcommands) and verified against real raw data -- see
+`results/tables/sensitivity_checks_verification.md`.
+
 ## Known limitation
 
 R's two most common GEE packages (`gee`, `geepack`) do not support an
